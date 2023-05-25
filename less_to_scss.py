@@ -25,7 +25,7 @@ INPUT_FILE = "output.scss"
 # Define the output SCSS file
 OUTPUT_FILE = "_main.scss"
 
-# Read the LESS file
+# Read the input file
 with open(INPUT_FILE, "r") as input_file:
     input_content = input_file.read()
 
