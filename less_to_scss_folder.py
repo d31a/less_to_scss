@@ -24,12 +24,13 @@ for filename in os.listdir(LESS_FOLDER):
             less_content = file.read()
 
         # Convert LESS variables to SCSS variables and replace underscores with hyphens
+        # Add any elements to be replaced after line.replace("foo", "bar")
         lines = less_content.split("\n")
         scss_lines = []
         for line in lines:
             if '__' in line or re.search(r'keyframes|charset', line):
                 scss_lines.append(line)
-            else:
+            else: 
               line = line.replace("@", "$")\
                     .replace("_", "-")\
                     .replace(".&", "&")\
