@@ -1,7 +1,11 @@
+# Script to change a less css file to SCSS
+# Last modified: 16 Jun 2023
+# Author: Ben Bagley
+
 import re
 
 # Define the LESS file you want to convert
-LESS_FILE = "input/components.less"
+LESS_FILE = "input/pages.less"
 SCSS_FILE = "output.scss"
 
 # Read the LESS file
@@ -12,9 +16,11 @@ with open(LESS_FILE, "r") as less_file:
 lines = less_content.split("\n")
 scss_lines = []
 for line in lines: 
-    if not re.search(r'keyframes|charset', line): # include any keywords that need to be ignored 
+    if '__' in line or re.search(r'keyframes|charset', line): # include any keywords or chars that need to be ignored 
+        scss_lines.append(line)
+    else:
         line = line.replace("@", "$").replace("_", "-")
-    scss_lines.append(line)
+        scss_lines.append(line)
 scss_content = "\n".join(scss_lines)
 
 # Write the converted content to the output SCSS file
@@ -24,7 +30,7 @@ with open(SCSS_FILE, "w") as scss_file:
 INPUT_FILE = "output.scss"
 
 # Define the output SCSS file
-OUTPUT_FILE = "output/_components.scss"
+OUTPUT_FILE = "output/_pages.scss"
 
 # Read the input file
 with open(INPUT_FILE, "r") as input_file:
