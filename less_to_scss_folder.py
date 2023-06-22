@@ -1,5 +1,8 @@
 # Script to change a less css file to SCSS
-# To convert a folder of files create folders called 'input' and 'output' in the root directory 
+# 1. To convert a folder of files create folders called 'input' and 'output' in the root directory
+# 2. Adjust ignores as required *line 32 
+# 3. Adjust replacements line 36
+# 4. Adjust breakpoints according to theme breakpoints line 47 
 # Last modified: 16 Jun 2023
 # Author: Ben Bagley
 
@@ -41,20 +44,20 @@ for filename in os.listdir(LESS_FOLDER):
         scss_content = "\n".join(scss_lines)
 
         # Apply breakpoints conversion
-        scss_content = scss_content.replace("$media $phone-wide-max", "@include bp_max(mlarge)")\
+        scss_content = scss_content.replace("$media $phone-wide-max", "@include bp_max(medium)")\
             .replace("$media $phone-max", "@include bp_max(smedium)")\
-            .replace("$media $tablet-max", "@include bp_max(medium)")\
+            .replace("$media $tablet-max", "@include bp_max(mlarge)")\
             .replace("$media $nine-sixty-max", "@include bp_max(large)")\
             .replace("$media $ten-twenty-four-max", "@include bp_max(xlarge)")\
             .replace("$media $desktop-max", "@include bp_max(xxlarge)")\
-            .replace("$media $twelve-eighty-max", "@include bp_max(xxxlarge)")\
-            .replace("$media $phone-wide", "@include bp(mlarge)")\
+            .replace("$media $phone-wide", "@include bp(medium)")\
             .replace("$media $phone", "@include bp(smedium)")\
-            .replace("$media $tablet", "@include bp(medium)")\
+            .replace("$media $tablet", "@include bp(mlarge)")\
             .replace("$media $nine-sixty", "@include bp(large)")\
             .replace("$media $ten-twenty-four", "@include bp(xlarge)")\
-            .replace("$media $desktop", "@include bp(xxlarge)")\
-            .replace("$media $twelve-eighty", "@include bp(xxxlarge)")
+            .replace("$media $desktop-l", "@include bp(xxxlarge)")\
+            .replace("$media $desktop", "@include bp(xxlarge)")
+           
 
         # Write the converted content with breakpoints applied to the output SCSS file
         with open(scss_file, "w") as file:
