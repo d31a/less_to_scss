@@ -1,9 +1,6 @@
 # Script to change a less css file to SCSS
 # 1. To convert a folder of files create folders called 'input' and 'output' in the root directory
-# 2. Adjust ignores as required *line 32 
-# 3. Adjust replacements line 36
-# 4. Adjust breakpoints according to theme breakpoints line 47 
-# Last modified: 16 Jun 2023
+# Last modified: 22 Jun 2023
 # Author: Ben Bagley
 
 import os
@@ -31,16 +28,25 @@ for filename in os.listdir(LESS_FOLDER):
         lines = less_content.split("\n")
         scss_lines = []
         for line in lines:
-            if '__' in line or re.search(r'keyframes|charset', line):
+            if '__' in line or re.search(r'keyframes|charset', line): # lines to ignore
                 scss_lines.append(line)
             else: 
-              line = line.replace("@", "$")\
-                    .replace("_", "-")\
-                    .replace(".&", "&")\
+                modified_line = ""
+                is_variable = False
+                for i in range(len(line)):
+                    if line[i] == "@":
+                        modified_line += "$"
+                        is_variable = True
+                    elif line[i] == "_" and is_variable:
+                        modified_line += "-"
+                    else:
+                        modified_line += line[i]
+                modified_line = modified_line.replace(".&", "&")\
                     .replace(".rotate", "@include rotate")\
                     .replace(".flex", "@include flex")\
+                    .replace(".border-radius", "@include border-radius")\
                     .replace(".transition", "@include transition")
-              scss_lines.append(line)
+                scss_lines.append(modified_line)
         scss_content = "\n".join(scss_lines)
 
         # Apply breakpoints conversion
@@ -55,9 +61,8 @@ for filename in os.listdir(LESS_FOLDER):
             .replace("$media $tablet", "@include bp(mlarge)")\
             .replace("$media $nine-sixty", "@include bp(large)")\
             .replace("$media $ten-twenty-four", "@include bp(xlarge)")\
-            .replace("$media $desktop-l", "@include bp(xxxlarge)")\
-            .replace("$media $desktop", "@include bp(xxlarge)")
-           
+            .replace("$media $desktop", "@include bp(xxlarge)")\
+            .replace("$media $desktop_l", "@include bp(xxxlarge)")
 
         # Write the converted content with breakpoints applied to the output SCSS file
         with open(scss_file, "w") as file:
