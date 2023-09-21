@@ -49,7 +49,7 @@ for filename in os.listdir(LESS_FOLDER):
                 scss_lines.append(modified_line)
         scss_content = "\n".join(scss_lines)
 
-        # Apply breakpoints conversion
+        # Apply breakpoints conversion, place max / wide / additional breakpoints before original (e.g. phone-max prior to phone)
         scss_content = scss_content.replace("$media $phone-wide-max", "@include bp_max(medium)")\
             .replace("$media $phone-max", "@include bp_max(smedium)")\
             .replace("$media $tablet-max", "@include bp_max(mlarge)")\
